@@ -5,6 +5,7 @@ class enemy_class
   constructor(x,y,id)
   {
 
+
     this.id = id;
 
     if(this.id == 0)  //WANDERER
@@ -19,6 +20,9 @@ class enemy_class
       this.radius = 0;
       this.angle = 0;
       this.predict_fire = 995 - player.level_difficulty;
+      this.temp = random(0,5);  //perlin noise
+      this.perlinY_max = this.y;
+      this.perlinY_min = this.y;
     }
 
     if(this.id == 1)  //CHASER
@@ -168,19 +172,33 @@ class enemy_class
 
     //MOVEMENT FOR WANDERER////////////////////////////////////////////////////
 
+
     if(this.id == 0)
     {
 
       //Adjust Y movement
 
-      this.temp = Math.floor(Math.random()*3);
-      if (this.temp == 0){
-        this.y+=1/ws;
+      // this.temp = Math.floor(Math.random()*3);
+      // if (this.temp == 0){
+      //   this.y+=1/ws;
+      // }
+      //
+      // if(this.temp == 1){
+      //   this.y-=1/ws;
+      // }
+
+      //Random y postioning with perlin noise
+      //this.y = map(noise(this.temp),0,1,HEIGHT,HEIGHT-HEIGHT);
+      this.y = map(noise(this.temp),0,1,this.perlinY_min,this.perlinY_max);
+      this.temp += 0.003;
+
+      if(this.perlinY_min > this.min){
+        this.perlinY_min --;
+      }
+      if(this.perlinY_max < this.max){
+        this.perlinY_max ++;
       }
 
-      if(this.temp == 1){
-        this.y-=1/ws;
-      }
     }
 
     //MOVEMENT FOR CHASER/////////////////////////////////////////////////////
